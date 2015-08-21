@@ -159,3 +159,84 @@ public class Grader {
 ```
 
 This should be rather self explanatory -- you're basically making a series of "assertions", but tabulating scores at the same time.
+
+## Pushing to GitHub
+
+We push all this code to a GitHub repository:
+
+[https://github.com/linanqiu/circle-ci-java-assignment-grading](https://github.com/linanqiu/circle-ci-java-assignment-grading)
+
+## Setting up CircleCI
+
+Add your repository on CircleCI after you've set up an account.
+
+![](/images/Using-CircleCI-to-Grade-Java-Assignments/circleci1.png)
+
+![](/images/Using-CircleCI-to-Grade-Java-Assignments/circleci2.png)
+
+You'll see that the build has started.
+
+![](/images/Using-CircleCI-to-Grade-Java-Assignments/circleci3.png)
+
+And you should get the results of `Grader.java` being run on `FibonacciRecursive.java` as a result of `build.sh` being run as told by `circle.yml` (Phew)
+
+![](/images/Using-CircleCI-to-Grade-Java-Assignments/circleci4.png)
+
+## Grade On Commit
+
+It shows that we've failed the assignment and didn't get full marks. Well obviously, since we made `Test 5` in the Grader an errorneous test. It should be producing 0 instead of 1. Let's change that line:
+
+```java
+public class Grader {
+    public static void main(String[] args) {
+        int score = 0;
+        int scoreMax = 50;
+
+        // Fibonacci
+        // Test 0
+        if (FibonacciRecursive.fibonacci(0) == 0) {
+            System.out.println("Test 1 Passed +10");
+            score += 10;
+        }
+        // Test 1
+        if (FibonacciRecursive.fibonacci(1) == 1) {
+            System.out.println("Test 2 Passed +10");
+            score += 10;
+        }
+        // Test 5
+        if (FibonacciRecursive.fibonacci(5) == 5) {
+            System.out.println("Test 3 Passed +10");
+            score += 10;
+        }
+        // Test 10
+        if (FibonacciRecursive.fibonacci(10) == 55) {
+            System.out.println("Test 4 Passed +10");
+            score += 10;
+        }
+        // Test -1
+        // Modified
+        if (FibonacciRecursive.fibonacci(-1) == 0) {
+            System.out.println("Test 5 Passed +10");
+            score += 10;
+        }
+
+        if (score != scoreMax) {
+            System.out.println("Score: " + score + "/" + scoreMax);
+            System.exit(1);
+        } else {
+            System.out.println("Score: " + score + "/" + scoreMax);
+            System.exit(0);
+        }
+    }
+}
+```
+
+We make this modification, and submit. We see that CircleCI has already seen the new commit and started building it:
+
+![](/images/Using-CircleCI-to-Grade-Java-Assignments/circleci5.png)
+
+Seems like the problem has been fixed! And this happened without us intervening (and no pizzas involved).
+
+![](/images/Using-CircleCI-to-Grade-Java-Assignments/circleci6.png)
+
+Isn't this awesome? Even awesome-er, CircleCI has a great API. That means you can use this to create a live scoreboard for your students / email notifications every time they submit code.
