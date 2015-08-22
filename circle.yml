@@ -6,5 +6,8 @@ machine:
 
 ## Customize test commands
 test:
+  pre:
+    - git clone https://github.com/linanqiu/ci-grader-demo.git
+    - cp ci-grader-demo/Grader.java ./Grader.java
   override:
     - sh build.sh
