@@ -12,3 +12,7 @@ test:
     - cp ci-grader-demo/Grader.java ./Grader.java
   override:
     - sh build.sh
+
+notify:
+  webhooks:
+    -url: http://cs3134-webhook.herokuapp.com
