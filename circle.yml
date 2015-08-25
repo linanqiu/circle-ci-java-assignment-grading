@@ -15,4 +15,4 @@ test:
 
 notify:
   webhooks:
-    - url: http://cs3134-webhook.herokuapp.com
+    - url: http://cs3134-jarvis.meteor.com/webhook/ci
